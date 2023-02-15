@@ -1,0 +1,32 @@
+<div class="container">
+  <form [formGroup] = "angForm" (ngSubmit)="onFormSubmit()">
+    
+    <div formArrayName="rows" class="row" id="content" #content>
+      <h3 style="margin-left: 16%;">Daily Status Report</h3>
+    <div *ngFor="let ang of rows.controls; index as idx" class="form-group"  [formGroupName]="idx"
+    style="border: 1px solid blue; padding: 10px; width: 600px; margin: 5px;">
+    <div class="column">
+      <input formControlName="subject" placeholder="enter a topic">
+    </div>
+      <div formArrayName="desc" class="column">
+        <div *ngFor="let de of rowDesc(idx).controls; index as jdx">
+          <input formControlName="{{jdx}}" placeholder="description of the topic" style="margin-top: 15px;">
+          <button type="button" (click)="addDesc(idx)" *ngIf="jdx==0" style="margin-left: 6px;">add desc</button>
+          <button type="button" (click)="removeDesc(idx,jdx)" *ngIf="jdx!=0" style="margin-left: 6px;">remove desc</button>
+        </div>
+      </div>
+      <button type="button" (click)="removeRowField(idx)" *ngIf="idx!=0" style="margin-top: 5px;">remove topic</button>
+    </div>
+  </div>
+    <div>
+      <button type="button" (click)="addRowField()">Add topic</button>
+    </div>
+    <div>
+      <button type="submit" class="btn btn-primary" style="margin-top: 10px;margin-left: 45%;" (click)="openDialog()">preview</button>
+    </div>
+    <div>
+      <button type="submit" class="btn btn-primary" style="margin-top: 10px;margin-left: 45%;">submit</button>
+    </div>
+
+    </form>
+  </div>
