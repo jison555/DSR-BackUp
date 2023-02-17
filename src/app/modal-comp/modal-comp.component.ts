@@ -1,7 +1,7 @@
 import { Component,ElementRef,Inject, Input, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA} from '@angular/material/dialog';
 import jsPDF from 'jspdf';
-import autoTable from 'jspdf-autotable';
+import autoTable, { Column } from 'jspdf-autotable';
 
 
 @Component({
@@ -29,17 +29,16 @@ this.dataSource=data.rows;
 
   save(){
     console.log("hiii",this.el);
-    var doc = new jsPDF('p','pt','letter');
+
+    var doc = new jsPDF();
     autoTable(doc,{ html: '#my_table',
+    startY: 60,
     theme:'grid',
-    columnStyles:{
-      0:{
-        cellWidth:180
-      },
-      1:{
-        cellWidth:180
-      }
-    }
+    tableWidth: 'auto',
+    styles:{
+      //fontSize: 50,
+      //cellWidth: 'wrap'
+    },
   });
     doc.save('table.pdf')
 

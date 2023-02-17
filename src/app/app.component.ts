@@ -6,6 +6,8 @@ import { FormArray, NgForm } from '@angular/forms';
 import { OnInit } from '@angular/core'
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms'
 import {MatDialog, MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { DSRServiceService } from './dsrservice.service';
 
 
 @Component({
@@ -16,10 +18,10 @@ import {MatDialog, MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog
 export class AppComponent implements OnInit{
   title = 'parallelProject';
   angForm!: FormGroup;
-  isshowTable:boolean=false;
   data: any;
+  showSubTopic:boolean=false;
 
-  constructor(private dialogRef:MatDialog){
+  constructor(private dialogRef:MatDialog,private service:DSRServiceService){
   }
 
   ngOnInit(): void {
@@ -29,7 +31,11 @@ export class AppComponent implements OnInit{
           new FormGroup({
             subject: new FormControl(),
             desc: new FormArray([
-              new FormControl()
+              new FormGroup({
+                discription: new FormControl(),
+                subDesc: new FormArray([
+                ])
+              })
             ])
           })
         ])
@@ -42,11 +48,20 @@ get rows(): FormArray{
 rowDesc(index:number):FormArray {
   return this.rows.at(index).get('desc') as FormArray;
 }
+subDesc(indexRow:number,indexDesc:number):FormArray {
+  return this.rowDesc(indexRow).at(indexDesc).get('subDesc') as FormArray;
+}
 addRowField() {
+  console.log(this.angForm);
+  
   this.rows.push(new FormGroup({
     subject: new FormControl(),
     desc: new FormArray([
-      new FormControl()
+      new FormGroup({
+        discription: new FormControl(),
+        subDesc: new FormArray([
+        ])
+      })
     ])
   }));
 }
@@ -56,10 +71,28 @@ removeRowField(index:number){
 }
 
 addDesc(index:number){
-  this.rowDesc(index).push(new FormControl())
+console.log(this.rows.at(index));
+
+  this.rowDesc(index).push(new FormGroup({
+    discription: new FormControl(),
+    subDesc: new FormArray([
+    ])
+  }))
+}
+
+addsubDesc(indexRow:number,indexDesc:number){
+console.log(indexRow,indexDesc);
+
+
+  this.showSubTopic=true;
+  this.subDesc(indexRow,indexDesc).push(new FormControl());
 }
 removeDesc(idx:number,jdx:number) {
   this.rowDesc(idx).removeAt(jdx);
+}
+
+removeSubDesc(idx:number,jdx:number,subidx:number){
+  this.subDesc(idx,jdx).removeAt(subidx);
 }
 
 deleteNameField(index:number) {
@@ -68,21 +101,23 @@ deleteNameField(index:number) {
   }
 }
 
-tableView() {
-  this.isshowTable=true;
-}
 
-onFormSubmit(): void {
-  console.log(this.angForm.value);
-  this.isshowTable=true;
-  this.data = this.angForm.value;
+onFormSubmit() {
+  console.log("on submit",this.angForm.value);
+  let val = this.angForm.value;
+  let abc="zzz";
+  this.service.saveReport(val);
+
+  
+   
+  
 }
   openDialog(){
     console.log("from open dialog",this.angForm.value);
     this.dialogRef.open(ModalCompComponent,{
       data:this.angForm.value,
-      height: '400px',
-  width: '600px',
+      height: '800px',
+      width: '800px',
     });
   }
 
