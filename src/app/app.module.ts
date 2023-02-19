@@ -16,6 +16,9 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { HttpClientModule } from '@angular/common/http';
+import { StatusReportComponent } from './status-report/status-report.component';
+import { ManagementComponent } from './management/management.component';
+
 // import { MatButtonModule } from '@angular/material/button';
 // import { MatButtonModule } from '@angular/material/button';
 
@@ -23,7 +26,10 @@ import { HttpClientModule } from '@angular/common/http';
 @NgModule({
   declarations: [
     AppComponent,
-    ModalCompComponent
+    ModalCompComponent,
+    StatusReportComponent,
+    ManagementComponent
+
   ],
   imports: [
     HttpClientModule,

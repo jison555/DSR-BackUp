@@ -1,0 +1,47 @@
+ <div class="container">
+    <form [formGroup] = "angForm" (ngSubmit)="onFormSubmit()">
+    <h1 style="margin-left: 28%;font-weight: bold;">STATUS REPORT</h1>
+        <div formArrayName="rows"  id="content" #content>    
+        <div *ngFor="let ang of rows.controls; index as idx" class="form-group"  [formGroupName]="idx"
+        style="border: 1px solid black;background-color: bisque; padding: 10px; width: 800px; margin: 5px;">
+        <div class="column">
+          <input formControlName="subject" placeholder="enter a topic" required>
+                <!-- <div *ngIf="ang.get('subject').errors?.['required']">
+                     <p>   topic is required.</p>
+                </div> -->
+        </div>
+          <div formArrayName="desc" class="column">
+            <div *ngFor="let de of rowDesc(idx).controls; index as jdx"  [formGroupName]="jdx">
+              <input formControlName="discription" placeholder="description of the topic" style="margin-left: 20px;width: 400px;margin-top: 5px;">
+              <button type="button" mat-button (click)="removeDesc(idx,jdx)" *ngIf="jdx!=0" style="margin-left: 6px;">remove</button>
+              <button type="button" mat-button (click)="addDesc(idx)" *ngIf="jdx==0" style="margin-left: 6px;">Add-Desc</button>
+              <button type="button" mat-button (click)="addsubDesc(idx,jdx)"> Sub-Desc</button>
+              <div formArrayName="subDesc" class="column">
+                <div *ngFor="let de of subDesc(idx,jdx).controls; index as subidx">
+                  <input formControlName="{{subidx}}" placeholder="sub-description" style="margin-left: 40px;width: 400px;margin-top: 5px;">
+                  <button type="button" mat-button (click)="removeSubDesc(idx,jdx,subidx)" style="margin-left: 6px;">remove</button>
+    
+                </div>
+            </div>
+            
+             <div>
+             </div>
+    
+          </div>
+          <button type="button" mat-button (click)="removeRowField(idx)" *ngIf="idx!=0" style="margin-top: 5px;">remove topic</button>
+        </div>
+      </div>
+        <div>
+          <button type="button" mat-button (click)="addRowField()">Add topic</button>
+        </div>
+        </div>
+          <div class="row" style="margin-left: 28%;">
+            <div>
+                <button type="button" mat-button class="btn btn-primary" style="margin-top: 10px;" (click)="openDialog(angForm)">preview</button>
+              </div>
+              <div>
+                <button type="submit" mat-button class="btn btn-primary" style="margin-top: 10px;margin-left: 5px;">submit</button>
+              </div>
+          </div>
+        </form>
+      </div> 
